@@ -87,20 +87,6 @@ function getParams(cmd)
     return params;
 }
 
-exports.toHHMM = function toHHMM(date) {
-    var txt = '';
-    var hours = '';
-    var minutes = '';
-    hours = date.getHours().toString();
-    minutes = date.getMinutes().toString();
-    if (hours.length == 1) hours = '0' + hours;
-    if (minutes.length == 1) minutes = '0' + minutes;
-    txt += hours;
-    txt += ':';
-    txt += minutes;
-    return txt;
-}
-
 function isAdmin(message) {
     var roles = [];
     roles = message.channel.server.rolesOf(message.sender);
