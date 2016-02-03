@@ -3,44 +3,59 @@
 
 var sound = require('./sound.js');
 
-exports.command = function(bot, message, callback) {
-    var content = message.content;
-    var server = message.channel.server;
-    var sender = message.sender;
-    
-    if (getCmd(content) === '!hello') {
-        bot.sendMessage(message, 'Hello, ' + sender.username + '.');
-    }
-    else if (getCmd(content)=== '!facepalm') {
-        bot.sendMessage(message, 'http://puu.sh/mT9DP/c470be6017.jpg');
-    }
-    else if (getCmd(content) === '!bsplitti') {
-        bot.sendMessage(message, 'http://puu.sh/mRQTi/ceec531586.jpg');
-    }
-    else if (getCmd(content) === '!topic' && isAdmin(server, sender))
+var commands = [
+    { 
+        cmd: '!hello',
+        execute: function(bot, message) {
+            bot.sendMessage(message, 'Hello, ' + message.sender.username + '.');
+        }
+    },
     {
-        bot.setChannelTopic(message, getParams(content));
-        bot.sendMessage(message, 'Set topic to "' + getParams(content) + '".');
-    }
-    else if (getCmd(content) === '!ip') {
-        if (getParams(content).length == 1)
-            bot.sendMessage(message, 'steam://connect/' + getParams(content)[0]);
-        else if (getParams(content).length == 2)
-            bot.sendMessage(message, 'steam://connect/' + getParams(content)[1]);
-    }
-    else if (getCmd(content) === '!joinVoice') {
-        sound.joinChannel(server, bot, getParams(content));
-    }
-    else if (getCmd(content) === '!leaveVoice') {
-        sound.leaveChannel(bot);
-    }
-    else if (getCmd(content) === '!source') {
-         bot.sendMessage(message, 'https://github.com/Polar-/discordBot');
-    }
-    else if (getCmd(content) === '!play glocks1') {
-        bot.voiceConnection.playFile('C://users/jussi/desktop/dbot/nafpl/glocks1.mp3', function(error) {
-            console.log(error);
-        });
+        cmd: '!facepalm',
+        execute: function(bot, message) {
+            bot.sendMessage(message, 'http://puu.sh/mT9DP/c470be6017.jpg');
+        }
+    },
+    {
+        cmd: '!bsplitti',
+        execute: function(bot, message) {
+            bot.sendMessage(message, 'http://puu.sh/mRQTi/ceec531586.jpg');
+        }
+    },
+    {
+        cmd: '!topic',
+        execute: function(bot, message) {
+            if (isAdmin(message))
+            {
+                bot.setChannelTopic(message, excludeCmd(message.content));
+                bot.sendMessage(message, 'Set topic to "' + excludeCmd(message.content) + '".');
+            }
+        }
+    },
+    {
+        cmd: '!ip',
+        execute: function(bot, message) {
+            if (getParams(message.content).length == 1)
+                bot.sendMessage(message, 'steam://connect/' + getParams(message.content)[0]);
+            else if (getParams(message.content).length == 2)
+                bot.sendMessage(message, 'steam://connect/' + getParams(message.content)[1]);
+        }
+    },
+    {
+        cmd: '!source',
+        execute: function(bot, message) {
+            bot.sendMessage(message, 'https://github.com/Polar-/discordBot');
+        }
+    },
+    
+];
+
+exports.command = function(bot, message) {
+    // Go through the arrays of command-objects
+    for (var i = 0; i < commands.length; i++) {
+        if (getCmd(message.content) === commands[i].cmd) {
+            commands[i].execute(bot, message);
+        }
     }
 }
 
@@ -50,12 +65,26 @@ function getCmd(cmd) {
     return splitted[0];
 }
 
+function excludeCmd(cmd) {
+    var txt = '';
+    var adding = false;
+    for (var i = 0; i < cmd.length; i++) {
+        if (adding) {
+            txt += cmd[i];
+        }
+        if (cmd[i] === ' ') {
+            adding = true;
+        }
+    }
+    return txt;
+}
+
 function getParams(cmd)
 {
-    var cmds = [];
-    cmds = cmd.split(' '); 
-    cmds.splice(0, 1);
-    return cmds;
+    var params = [];
+    params = cmd.split(' '); 
+    params.splice(0, 1);
+    return params;
 }
 
 exports.toHHMM = function toHHMM(date) {
@@ -72,9 +101,9 @@ exports.toHHMM = function toHHMM(date) {
     return txt;
 }
 
-function isAdmin(server, user) {
+function isAdmin(message) {
     var roles = [];
-    roles = server.rolesOf(user);
+    roles = message.channel.server.rolesOf(message.sender);
     for (var i = 0; i < roles.length; i++) {
         if (roles[i].name == 'admin') return true;
     }

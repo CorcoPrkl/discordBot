@@ -7,6 +7,7 @@ var config = require("./config/config.js");
 var commands = require("./commands.js");
 var logger = require("./logger.js");
 
+// Command listener
 bot.on("message", function(message){
     logger.log(message);
     commands.command(bot, message);
