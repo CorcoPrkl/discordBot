@@ -47,6 +47,12 @@ var commands = [
         execute: function(bot, message) {
             bot.sendMessage(message, 'https://github.com/CorcoPrkl/discordBot');
         }
+    },
+	{
+        cmd: '!trump',
+        execute: function(bot, message) {
+            bot.sendMessage(message, 'http://i.imgur.com/ggAcrzF.jpg');
+        }
     }
 ];
 
