@@ -34,8 +34,8 @@ exports.command = function(bot, message, callback) {
     else if (getCmd(content) === '!leaveVoice') {
         sound.leaveChannel(bot);
     }
-    else if (getCmd(content) === '!stats') {
-        
+    else if (getCmd(content) === '!source') {
+         bot.sendMessage(message, 'https://github.com/Polar-/discordBot');
     }
     else if (getCmd(content) === '!play glocks1') {
         bot.voiceConnection.playFile('C://users/jussi/desktop/dbot/nafpl/glocks1.mp3', function(error) {
