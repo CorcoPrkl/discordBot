@@ -25,11 +25,12 @@ var commands = [
     {
         cmd: '!topic',
         execute: function(bot, message) {
-            if (isAdmin(message))
-            {
-                bot.setChannelTopic(message, excludeCmd(message.content));
-                bot.sendMessage(message, 'Set topic to "' + excludeCmd(message.content) + '".');
-            }
+		console.log(message.content);
+		var topic = splitCmd(message.content);
+		console.log(topic);
+                bot.setChannelTopic(message, topic);
+                bot.sendMessage(message, 'Set topic to "' + topic + '".');
+
         }
     },
     {
@@ -44,38 +45,33 @@ var commands = [
     {
         cmd: '!source',
         execute: function(bot, message) {
-            bot.sendMessage(message, 'https://github.com/Polar-/discordBot');
+            bot.sendMessage(message, 'https://github.com/CorcoPrkl/discordBot');
         }
     }
 ];
 
 exports.command = function(bot, message) {
     // Go through the arrays of command-objects
-    for (var i = 0; i < commands.length; i++) {
-        if (getCmd(message.content) === commands[i].cmd) {
+	var currentCommand = getCmd(message.content);    
+	for (var i = 0; i < commands.length; i++) {	 	
+        if (currentCommand === commands[i].cmd) {
+			console.log("found command: "+commands[i].cmd);
             commands[i].execute(bot, message);
         }
     }
 }
 
-function getCmd(cmd) {
-    var splitted = [];
-    splitted = cmd.split(' ');
-    return splitted[0];
+function getCmd(cmd) {   
+    return cmd.split(' ')[0];
 }
 
-function excludeCmd(cmd) {
-    var txt = '';
-    var adding = false;
-    for (var i = 0; i < cmd.length; i++) {
-        if (adding) {
-            txt += cmd[i];
-        }
-        if (cmd[i] === ' ') {
-            adding = true;
-        }
-    }
-    return txt;
+function splitCmd(cmd) {
+   	var split = cmd.split(' ');	
+	var joined = "";
+	for (var i=1; i < split.length; i++) {
+	joined += split[i] + " ";
+	}
+	return joined;
 }
 
 function getParams(cmd)

@@ -14,5 +14,9 @@ bot.on("message", function(message){
 });
 
 bot.login(config.discordUsername, config.discordPassword, function(error, token) {
-    if (error) console.log(error);
+    if (error) { console.log(error); }
+	else { console.log("logged in succesfully");}
+
 });
+
+
