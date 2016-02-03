@@ -46,8 +46,7 @@ var commands = [
         execute: function(bot, message) {
             bot.sendMessage(message, 'https://github.com/Polar-/discordBot');
         }
-    },
-    
+    }
 ];
 
 exports.command = function(bot, message) {
