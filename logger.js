@@ -1,13 +1,19 @@
 // PolarBot
 // logger.js
 
-var commands = require("./commands.js");
+var commands = require('./commands.js');
 
 exports.log = function(message) {
     var tStamp = message.timestamp;
     tStamp = new Date(tStamp);
     tStamp = toHHMM(tStamp);
-    console.log(tStamp + " " + message.sender.username + ": " + message.cleanContent);
+    console.log(
+        tStamp +
+        ' on ' + message.channel.server +
+        '/' + message.channel.name + ' - ' +
+        message.sender.username +
+        ': ' + message.cleanContent
+    );
 }
 
 function toHHMM(date) {
