@@ -55,7 +55,7 @@ exports.command = function(bot, message) {
 	var currentCommand = getCmd(message.content);    
 	for (var i = 0; i < commands.length; i++) {	 	
         if (currentCommand === commands[i].cmd) {
-			console.log("found command: "+commands[i].cmd);
+			console.log("found command: "+currentCommand);
             commands[i].execute(bot, message);
         }
     }
