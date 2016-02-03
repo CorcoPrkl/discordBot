@@ -1,0 +1,14 @@
+{
+  "name": "dbot",
+  "version": "1.0.0",
+  "description": "discord_bot",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Polar",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^6.0.0"
+  }
+}
