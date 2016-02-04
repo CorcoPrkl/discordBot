@@ -9,14 +9,15 @@ var logger = require("./logger.js");
 
 // Command listener
 bot.on("message", function(message){
-    logger.log(message);
-    commands.command(bot, message);
+    logger.log(message);	
+	if (message.author.username != bot.internal.client.username) {
+    commands.command(bot, message); 
+	}
+	
+	
 });
 
 bot.login(config.discordUsername, config.discordPassword, function(error, token) {
     if (error) { console.log(error); }
 	else { console.log("logged in succesfully");}
-
 });
-
-
